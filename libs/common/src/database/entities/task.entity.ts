@@ -21,17 +21,17 @@ export class TaskEntity {
   @Column()
   title: string;
 
-  @Column()
+  @Column({ default: '' })
   text: string;
 
-  @Column({ enum: TaskStatusEnum })
+  @Column({ enum: TaskStatusEnum, default: TaskStatusEnum.UNCOMPLETED })
   status: TaskStatusEnum;
 
   @ManyToOne(() => UserEntity, { nullable: false, onDelete: 'CASCADE' })
   owner: UserEntity;
 
-  @Column({ type: 'timestamptz' })
-  completedAt: Date;
+  @Column({ type: 'timestamptz', nullable: true })
+  completedAt: Date | null;
 
   @CreateDateColumn({ type: 'timestamptz', select: false })
   createdAt: Date;

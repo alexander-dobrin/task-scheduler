@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as dotenv from 'dotenv';
-import { UserEntity } from './entities/user.entity';
 import { TaskEntity } from './entities/task.entity';
+import { UserEntity } from './entities/user.entity';
 
 dotenv.config();
 
@@ -15,7 +15,6 @@ dotenv.config();
       entities: [UserEntity, TaskEntity],
       synchronize: true,
     }),
-    TypeOrmModule.forFeature([UserEntity, TaskEntity]),
   ],
 })
 export class DatabaseModule {}
