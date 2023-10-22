@@ -11,7 +11,8 @@ dotenv.config();
     TypeOrmModule.forRoot({
       type: 'postgres',
       username: 'postgres',
-      password: process.env.DB_PASSWORD,
+      host: 'postgres',
+      password: process.env.POSTGRES_PASSWORD,
       entities: [UserEntity, TaskEntity],
       synchronize: true,
     }),

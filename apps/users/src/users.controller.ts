@@ -1,12 +1,18 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
+import {
+  Ctx,
+  MessagePattern,
+  Payload,
+  RmqContext,
+} from '@nestjs/microservices';
 import { UsersService } from './users.service';
 
 @Controller()
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Get()
-  getHello(): string {
-    return this.usersService.getHello();
+  @MessagePattern('get_by_id')
+  handleGetById(@Payload() data, @Ctx() context: RmqContext) {
+    return this.usersService.getById(data.id, context);
   }
 }
