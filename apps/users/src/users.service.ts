@@ -13,7 +13,7 @@ export class UsersService {
 
   async getById(id: number, context: RmqContext): Promise<UserEntity> {
     const user = await this.usersRepository.findOneBy({ id });
-
+    console.log(user);
     const channel = context.getChannelRef();
     channel.ack(context.getMessage());
 
