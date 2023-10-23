@@ -1,14 +1,16 @@
 services:
-  tasks:
+  task-scheduler-api:
     build:
       context: .
-      dockerfile: ./apps/tasks/Dockerfile
+      dockerfile: ./apps/task-scheduler-api/Dockerfile
       target: development
-    command: npm run start:dev tasks
+    command: npm run start:dev task-scheduler-api
     env_file:
       - .env
     depends_on:
       - postgres
+      - rabbitmq
+      - email
     volumes:
       - .:/app
       - /app/node_modules
@@ -16,16 +18,17 @@ services:
       - 3000:3000
     restart: always
 
-  users:
+  email:
     build:
       context: .
-      dockerfile: ./apps/users/Dockerfile
+      dockerfile: ./apps/email/Dockerfile
       target: development
-    command: npm run start:dev users
+    command: npm run start:dev email
     env_file:
       - .env
     depends_on:
       - postgres
+      - rabbitmq
     volumes:
       - .:/app
       - /app/node_modules

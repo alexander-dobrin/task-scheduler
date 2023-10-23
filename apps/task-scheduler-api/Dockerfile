@@ -10,4 +10,4 @@ COPY . .
 
 COPY ./dist ./dist
 
-CMD [ "npm", "run", "start:dev", "tasks" ]
+CMD [ "npm", "run", "start:dev", "task-scheduler-api" ]
