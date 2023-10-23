@@ -12,4 +12,18 @@ export class UsersService {
     private readonly usersRepository: Repository<UserEntity>,
     @Inject(EMAIL_SERVICE) private readonly emailClient: ClientProxy,
   ) {}
+
+  async getByCredentials(email: string, password: string): Promise<any> {
+    const user = await this.usersRepository.findOne({
+      where: { email },
+      select: ['id', 'email', 'password'],
+    });
+
+    if (user && user.password === password) {
+      const { password, ...result } = user;
+      return result;
+    }
+
+    return null;
+  }
 }

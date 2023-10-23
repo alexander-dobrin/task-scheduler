@@ -4,6 +4,7 @@ import { UserEntity } from '@app/common/database/entities/user.entity';
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { LocalStrategy } from './strategies/local.strategy';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 
@@ -23,6 +24,6 @@ import { UsersService } from './users.service';
     ]),
   ],
   controllers: [UsersController],
-  providers: [UsersService],
+  providers: [UsersService, LocalStrategy],
 })
 export class UsersModule {}
