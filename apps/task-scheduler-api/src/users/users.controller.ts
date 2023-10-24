@@ -6,9 +6,9 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { CookieAuthGuard } from './guards/cookie-auth.guard';
-import { CustomRegisterGuard } from './guards/custom-register.guard';
-import { LocalAuthGuard } from './guards/local-auth.guard';
+import { CookieAuthGuard } from '../auth/guards/cookie-auth.guard';
+import { CustomRegisterGuard } from '../auth/guards/custom-register.guard';
+import { LocalAuthGuard } from '../auth/guards/local-auth.guard';
 import { UsersService } from './users.service';
 
 @Controller()
