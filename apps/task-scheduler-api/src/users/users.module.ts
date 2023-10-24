@@ -4,7 +4,9 @@ import { UserEntity } from '@app/common/database/entities/user.entity';
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { LocalStrategy } from './strategies/local.strategy';
+import { LocalSerializer } from './serializers/local.serializer';
+import { LocalAuthStrategy } from './strategies/local-auth.strategy';
+import { CustomRegisterStrategy } from './strategies/custom-register.strategy';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 
@@ -24,6 +26,11 @@ import { UsersService } from './users.service';
     ]),
   ],
   controllers: [UsersController],
-  providers: [UsersService, LocalStrategy],
+  providers: [
+    UsersService,
+    LocalAuthStrategy,
+    CustomRegisterStrategy,
+    LocalSerializer,
+  ],
 })
 export class UsersModule {}

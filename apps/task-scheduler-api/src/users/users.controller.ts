@@ -1,4 +1,13 @@
-import { Controller, Post, Request, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  HttpCode,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
+import { CookieAuthGuard } from './guards/cookie-auth.guard';
+import { CustomRegisterGuard } from './guards/custom-register.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { UsersService } from './users.service';
 
@@ -6,9 +15,19 @@ import { UsersService } from './users.service';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @UseGuards(LocalAuthGuard)
+  @Post('user')
+  @HttpCode(200)
+  @UseGuards(CustomRegisterGuard)
+  register() {}
+
   @Post('session')
-  async login(@Request() req) {
-    return req.user;
+  @HttpCode(200)
+  @UseGuards(LocalAuthGuard)
+  logIn() {}
+
+  @Delete('session')
+  @UseGuards(CookieAuthGuard)
+  logOut(@Request() req) {
+    req.session.destroy();
   }
 }

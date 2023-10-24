@@ -1,6 +1,11 @@
 import { EMAIL_SERVICE } from '@app/common/constants';
 import { UserEntity } from '@app/common/database/entities/user.entity';
-import { Inject, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -13,11 +18,29 @@ export class UsersService {
     @Inject(EMAIL_SERVICE) private readonly emailClient: ClientProxy,
   ) {}
 
+  async register(dto) {
+    const userWithSameEmail = await this.usersRepository.findOneBy({
+      email: dto.email,
+    });
+
+    if (userWithSameEmail) {
+      throw new BadRequestException('Email adress is allready in use');
+    }
+
+    const user = await this.usersRepository.save({ ...dto });
+
+    return user;
+  }
+
   async getByCredentials(email: string, password: string): Promise<any> {
     const user = await this.usersRepository.findOne({
       where: { email },
       select: ['id', 'email', 'password'],
     });
+
+    if (!user) {
+      throw new UnauthorizedException();
+    }
 
     if (user && user.password === password) {
       const { password, ...result } = user;
