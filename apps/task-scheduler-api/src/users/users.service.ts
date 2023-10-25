@@ -1,5 +1,4 @@
 import { EMAIL_SERVICE } from '@app/common/constants';
-import { UserEntity } from '@app/common/database/entities/user.entity';
 import {
   BadRequestException,
   Inject,
@@ -9,6 +8,7 @@ import {
 import { ClientProxy } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { UserEntity } from '../database/entities/user.entity';
 
 @Injectable()
 export class UsersService {

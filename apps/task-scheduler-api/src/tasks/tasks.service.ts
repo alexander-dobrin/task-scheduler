@@ -1,8 +1,8 @@
-import { TaskEntity } from '@app/common/database/entities/task.entity';
-import { UserEntity } from '@app/common/database/entities/user.entity';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { TaskEntity } from '../database/entities/task.entity';
+import { UserEntity } from '../database/entities/user.entity';
 
 @Injectable()
 export class TasksService {
