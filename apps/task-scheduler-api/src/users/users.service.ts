@@ -29,6 +29,8 @@ export class UsersService {
 
     const user = await this.usersRepository.save({ ...dto });
 
+    this.emailClient.emit('user_registered', user);
+
     return user;
   }
 
