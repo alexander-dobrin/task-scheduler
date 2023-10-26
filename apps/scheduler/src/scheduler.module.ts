@@ -1,11 +1,25 @@
+import { EMAIL_SERVICE } from '@app/common/constants';
+import { DatabaseModule } from '@app/common/database/database.module';
 import { Module } from '@nestjs/common';
-import { SchedulerController } from './scheduler.controller';
-import { SchedulerService } from './scheduler.service';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ScheduleModule } from '@nestjs/schedule';
+import { SchedulerService } from './scheduler.service';
 
 @Module({
-  imports: [ScheduleModule.forRoot()],
-  controllers: [SchedulerController],
+  imports: [
+    DatabaseModule,
+    ScheduleModule.forRoot(),
+    ClientsModule.register([
+      {
+        name: EMAIL_SERVICE,
+        transport: Transport.RMQ,
+        options: {
+          urls: ['amqp://rabbitmq:5672'],
+          queue: EMAIL_SERVICE,
+        },
+      },
+    ]),
+  ],
   providers: [SchedulerService],
 })
 export class SchedulerModule {}

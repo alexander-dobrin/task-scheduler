@@ -1,3 +1,4 @@
+import { UserTasksStatistics } from '@app/common/types';
 import { Inject, Injectable } from '@nestjs/common';
 import { RmqContext } from '@nestjs/microservices';
 import * as fs from 'fs';
@@ -29,6 +30,38 @@ export class EmailService {
     };
 
     await this.transporter.sendMail(mailOptions);
+
+    context.getChannelRef().ack(context.getMessage());
+  }
+
+  async sendOutTasksStatistics(
+    statistics: UserTasksStatistics[],
+    context: RmqContext,
+  ) {
+    const template = fs.readFileSync(
+      path.join('./libs', 'templates', 'tasks-statistics.hbs'),
+      'utf8',
+    );
+
+    for (const userStatistics of statistics) {
+      const compiledTemplate = handlebars.compile(template);
+      const html = compiledTemplate({
+        remainingTasksCount: userStatistics.remainingTasksCount,
+        completedTasksCount: userStatistics.completedTasksCount,
+      });
+
+      // TODO: remove after dto validation
+      if (!userStatistics.email.includes('@')) continue;
+
+      const mailOptions = {
+        from: process.env.SMTP_USER,
+        to: userStatistics.email,
+        subject: 'No-reply',
+        html,
+      };
+
+      await this.transporter.sendMail(mailOptions);
+    }
 
     context.getChannelRef().ack(context.getMessage());
   }

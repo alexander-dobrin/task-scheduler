@@ -1,9 +1,7 @@
 import { EMAIL_SERVICE } from '@app/common/constants';
 import { DatabaseModule } from '@app/common/database/database.module';
-import { UserEntity } from '@app/common/database/entities/user.entity';
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { LocalSerializer } from '../auth/serializers/local.serializer';
 import { CustomRegisterStrategy } from '../auth/strategies/custom-register.strategy';
 import { LocalAuthStrategy } from '../auth/strategies/local-auth.strategy';
@@ -13,7 +11,6 @@ import { UsersService } from './users.service';
 @Module({
   imports: [
     DatabaseModule,
-    TypeOrmModule.forFeature([UserEntity]),
     ClientsModule.register([
       {
         name: EMAIL_SERVICE,
