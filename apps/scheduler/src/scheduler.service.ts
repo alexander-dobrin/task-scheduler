@@ -18,7 +18,7 @@ export class SchedulerService {
   ) {}
 
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
-  async sendOutTaskStatistics() {
+  async sendOutTaskStatistics(): Promise<void> {
     const prevDayDate = DateTime.now().minus({ days: 1 }).toISO();
 
     const statistics: UserTasksStatistics[] = await this.usersRepository

@@ -37,7 +37,7 @@ export class EmailService {
   async sendOutTasksStatistics(
     statistics: UserTasksStatistics[],
     context: RmqContext,
-  ) {
+  ): Promise<void> {
     const template = fs.readFileSync(
       path.join('./libs', 'templates', 'tasks-statistics.hbs'),
       'utf8',
