@@ -35,6 +35,21 @@ services:
       - /app/node_modules
     restart: always
 
+  scheduler:
+    build:
+      context: .
+      dockerfile: ./apps/scheduler/Dockerfile
+      target: development
+    command: npm run start:dev scheduler
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+    volumes:
+      - .:/app
+      - /app/node_modules
+    restart: always
+
   redis:
     image: 'redis'
     ports:
