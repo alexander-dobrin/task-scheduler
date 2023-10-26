@@ -16,8 +16,6 @@ dotenv.config();
       entities: [UserEntity, TaskEntity],
       synchronize: true,
     }),
-    TypeOrmModule.forFeature([UserEntity, TaskEntity]),
   ],
-  exports: [TypeOrmModule],
 })
 export class DatabaseModule {}
