@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Session,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 
@@ -14,8 +15,8 @@ export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
   @Post()
-  create(@Body() dto) {
-    return this.tasksService.create(dto);
+  create(@Body() dto, @Session() session) {
+    return this.tasksService.create(dto, session);
   }
 
   @Get()
@@ -24,8 +25,8 @@ export class TasksController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: number, @Body() dto) {
-    return this.tasksService.update(id, dto);
+  update(@Param('id') id: number, @Body() dto, @Session() session) {
+    return this.tasksService.update(id, dto, session);
   }
 
   @Delete(':id')

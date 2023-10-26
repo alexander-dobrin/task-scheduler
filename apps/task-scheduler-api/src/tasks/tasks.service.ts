@@ -14,23 +14,28 @@ export class TasksService {
     private readonly usersRepository: Repository<UserEntity>,
   ) {}
 
-  async create(dto): Promise<TaskEntity> {
-    // TODO: get id from payload
-    const user = await this.usersRepository.findOneBy({ id: dto.owner.id });
+  async create(dto, session): Promise<TaskEntity> {
+    const user = await this.usersRepository.findOneBy({
+      id: session.passport.user,
+    });
 
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-
-    return this.tasksRepository.save({ ...dto, user });
+    return this.tasksRepository.save({ ...dto, owner: user });
   }
 
   get(): Promise<TaskEntity[]> {
     return this.tasksRepository.find();
   }
 
-  async update(id: number, dto): Promise<void> {
-    const task = new TaskEntity();
+  async update(id: number, dto, session): Promise<TaskEntity> {
+    const task = await this.tasksRepository.findOneBy({
+      owner: { id: session.passport.user },
+      id,
+    });
+
+    if (!task) {
+      throw new NotFoundException('Task not found for user');
+    }
+
     task.title = dto.title ?? task.title;
     task.text = dto.text ?? task.text;
 
@@ -40,6 +45,8 @@ export class TasksService {
     }
 
     await this.tasksRepository.update(id, task);
+
+    return task;
   }
 
   async delete(id: number): Promise<void> {
