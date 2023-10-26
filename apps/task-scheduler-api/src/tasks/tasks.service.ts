@@ -2,6 +2,7 @@ import { TaskEntity } from '@app/common/database/entities/task.entity';
 import { UserEntity } from '@app/common/database/entities/user.entity';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { DateTime } from 'luxon';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -29,7 +30,16 @@ export class TasksService {
   }
 
   async update(id: number, dto): Promise<void> {
-    await this.tasksRepository.update(id, dto);
+    const task = new TaskEntity();
+    task.title = dto.title ?? task.title;
+    task.text = dto.text ?? task.text;
+
+    if (dto.status) {
+      task.status = dto.status;
+      task.completedAt = DateTime.utc().toJSDate();
+    }
+
+    await this.tasksRepository.update(id, task);
   }
 
   async delete(id: number): Promise<void> {
