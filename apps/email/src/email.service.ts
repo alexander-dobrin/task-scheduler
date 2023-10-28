@@ -15,7 +15,7 @@ export class EmailService {
 
   async sendWellcomeMail(to: string, context: RmqContext): Promise<void> {
     const template = fs.readFileSync(
-      path.join('./libs', 'templates', 'wellcome.hbs'),
+      path.join('templates', 'wellcome.hbs'),
       'utf8',
     );
 
@@ -39,7 +39,7 @@ export class EmailService {
     context: RmqContext,
   ): Promise<void> {
     const template = fs.readFileSync(
-      path.join('./libs', 'templates', 'tasks-statistics.hbs'),
+      path.join('templates', 'tasks-statistics.hbs'),
       'utf8',
     );
 

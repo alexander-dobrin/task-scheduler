@@ -17,7 +17,7 @@ export class SchedulerService {
     @Inject(EMAIL_SERVICE) private readonly emailClient: ClientProxy,
   ) {}
 
-  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+  @Cron(CronExpression.EVERY_30_SECONDS)
   async sendOutTaskStatistics(): Promise<void> {
     const prevDayDate = DateTime.now().minus({ days: 1 }).toISO();
 
