@@ -44,6 +44,8 @@ export class SchedulerService {
       )
       .getRawMany();
 
-    this.emailClient.emit('send_out_task_statistics', statistics);
+    statistics.forEach((statistics) =>
+      this.emailClient.emit('send_out_task_statistics', statistics),
+    );
   }
 }

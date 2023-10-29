@@ -34,8 +34,8 @@ export class EmailService {
     context.getChannelRef().ack(context.getMessage());
   }
 
-  async sendOutTasksStatistics(
-    statistics: UserTasksStatistics[],
+  async sendTaskStatistics(
+    statistics: UserTasksStatistics,
     context: RmqContext,
   ): Promise<void> {
     const template = fs.readFileSync(
@@ -43,25 +43,26 @@ export class EmailService {
       'utf8',
     );
 
-    for (const userStatistics of statistics) {
-      const compiledTemplate = handlebars.compile(template);
-      const html = compiledTemplate({
-        remainingTasksCount: userStatistics.remainingTasksCount,
-        completedTasksCount: userStatistics.completedTasksCount,
-      });
+    const compiledTemplate = handlebars.compile(template);
+    const html = compiledTemplate({
+      remainingTasksCount: statistics.remainingTasksCount,
+      completedTasksCount: statistics.completedTasksCount,
+    });
 
-      // TODO: remove after dto validation
-      if (!userStatistics.email.includes('@')) continue;
-
-      const mailOptions = {
-        from: process.env.SMTP_USER,
-        to: userStatistics.email,
-        subject: 'No-reply',
-        html,
-      };
-
-      await this.transporter.sendMail(mailOptions);
+    // TODO: remove after dto validation
+    if (!statistics.email.includes('@')) {
+      context.getChannelRef().ack(context.getMessage());
+      return;
     }
+
+    const mailOptions = {
+      from: process.env.SMTP_USER,
+      to: statistics.email,
+      subject: 'No-reply',
+      html,
+    };
+
+    await this.transporter.sendMail(mailOptions);
 
     context.getChannelRef().ack(context.getMessage());
   }

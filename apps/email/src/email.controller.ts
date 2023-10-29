@@ -14,9 +14,9 @@ export class EmailController {
 
   @EventPattern('send_out_task_statistics')
   handleSendOutTaskStatistics(
-    @Payload() statistics: UserTasksStatistics[],
+    @Payload() statistics: UserTasksStatistics,
     @Ctx() context: RmqContext,
   ) {
-    return this.emailService.sendOutTasksStatistics(statistics, context);
+    return this.emailService.sendTaskStatistics(statistics, context);
   }
 }
