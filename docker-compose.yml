@@ -10,7 +10,7 @@ services:
     depends_on:
       - postgres
       - rabbitmq
-      - email
+      - mailer
       - redis
     volumes:
       - .:/app
@@ -19,12 +19,12 @@ services:
       - 3000:3000
     restart: always
 
-  email:
+  mailer:
     build:
       context: .
-      dockerfile: ./apps/email/Dockerfile
+      dockerfile: ./apps/mailer/Dockerfile
       target: development
-    command: npm run start:dev email
+    command: npm run start:dev mailer
     env_file:
       - .env
     depends_on:

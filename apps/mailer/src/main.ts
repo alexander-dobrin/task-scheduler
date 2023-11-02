@@ -1,10 +1,10 @@
 import { EMAIL_SERVICE } from '@app/common/constants';
 import { NestFactory } from '@nestjs/core';
 import { Transport } from '@nestjs/microservices';
-import { EmailModule } from './email.module';
+import { MailerModule } from './mailer.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(EmailModule);
+  const app = await NestFactory.create(MailerModule);
 
   app.connectMicroservice({
     transport: Transport.RMQ,

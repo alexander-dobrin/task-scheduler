@@ -28,13 +28,13 @@
         "tsConfigPath": "libs/common/tsconfig.lib.json"
       }
     },
-    "email": {
+    "mailer": {
       "type": "application",
-      "root": "apps/email",
+      "root": "apps/mailer",
       "entryFile": "main",
-      "sourceRoot": "apps/email/src",
+      "sourceRoot": "apps/mailer/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/email/tsconfig.app.json"
+        "tsConfigPath": "apps/mailer/tsconfig.app.json"
       }
     },
     "scheduler": {

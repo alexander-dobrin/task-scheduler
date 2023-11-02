@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 import * as nodemailer from 'nodemailer';
 import { SMTP_TRANSPORTER } from './constants';
-import { EmailController } from './email.controller';
-import { EmailService } from './email.service';
+import { MailerController } from './mailer.controller';
+import { MailerService } from './mailer.service';
 
 dotenv.config();
 
@@ -20,8 +20,8 @@ dotenv.config();
         },
       }),
     },
-    EmailService,
+    MailerService,
   ],
-  controllers: [EmailController],
+  controllers: [MailerController],
 })
-export class EmailModule {}
+export class MailerModule {}

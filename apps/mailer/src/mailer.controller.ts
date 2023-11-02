@@ -1,15 +1,15 @@
 import { UserTasksStatistics } from '@app/common/types';
 import { Controller } from '@nestjs/common';
 import { Ctx, EventPattern, Payload, RmqContext } from '@nestjs/microservices';
-import { EmailService } from './email.service';
+import { MailerService } from './mailer.service';
 
 @Controller()
-export class EmailController {
-  constructor(private readonly emailService: EmailService) {}
+export class MailerController {
+  constructor(private readonly mailerService: MailerService) {}
 
   @EventPattern('user_registered')
   handleUserRegistered(@Payload() data, @Ctx() context: RmqContext) {
-    return this.emailService.sendWellcomeMail(data.email, context);
+    return this.mailerService.sendWellcomeMail(data.email, context);
   }
 
   @EventPattern('send_out_task_statistics')
@@ -17,6 +17,6 @@ export class EmailController {
     @Payload() statistics: UserTasksStatistics,
     @Ctx() context: RmqContext,
   ) {
-    return this.emailService.sendTaskStatistics(statistics, context);
+    return this.mailerService.sendTaskStatistics(statistics, context);
   }
 }

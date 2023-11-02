@@ -8,7 +8,7 @@ import * as path from 'path';
 import { SMTP_TRANSPORTER } from './constants';
 
 @Injectable()
-export class EmailService {
+export class MailerService {
   constructor(
     @Inject(SMTP_TRANSPORTER) private readonly transporter: Transporter,
   ) {}
